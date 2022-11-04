@@ -10,7 +10,7 @@
     <div class="page">
         <div class="page__container">
             <header class="header">
-                <img src="./images/logo.png" alt="лого" class="header__logo">
+                <img src="./images/logo.svg" alt="лого" class="header__logo">
             </header>
             <main class="content">
                 <section class="profile">
@@ -24,22 +24,22 @@
                     </div>
                     <button type="button" class="profile__add-button"></button>
                 </section>
-                <section class="popup popup_profile">
-                    <form class="popup__container popup__container_profile">
-                        <button type="button" class="popup__close-button"></button>
-                        <h2 class="popup__title">Редактировать профиль</h2>
-                        <input type="text" class="popup__field popup__field_name" value="">
-                        <input type="text" class="popup__field popup__field_about" value="">
-                        <button type="submit" class="popup__save-button">Сохранить</button>
-                    </form>
-                </section>
+                    <div class="popup">
+                        <form class="popup__container popup__container_profile_form" name="profile-form">
+                            <button type="button" class="popup__close-button"></button>
+                            <h2 class="popup__title">Редактировать профиль</h2>
+                            <input name="profileName" type="text" class="popup__field popup__field_profile_name" value="">
+                            <input name="profileAbout" type="text" class="popup__field popup__field_profile_about" value="">
+                            <button type="submit" class="popup__save-button">Сохранить</button>
+                        </form>
+                    </div>
                 <section class="photo-cards">
                     <div class="card">
                         <img src="./images/kirill-pershin-karachaevsk.png" alt="Карачаевск" class="card__img">
                         <div class="card__under">
                             <h2 class="card__title">Карачаево-Черкесия</h2>
                             <div class="card__like-container">
-                            <img src="./images/Like.svg" alt="лайк" class="card__like">
+                            <button type="button" class="card__like-button"></button>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         <div class="card__under">
                             <h2 class="card__title">Гора Эльбрус</h2>
                             <div class="card__like-container">
-                            <img src="./images/Like.svg" alt="лайк" class="card__like">
+                                <button type="button" class="card__like-button"></button>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class="card__under">
                             <h2 class="card__title">Домбай</h2>
                             <div class="card__like-container">
-                            <img src="./images/Like.svg" alt="лайк" class="card__like">
+                                <button type="button" class="card__like-button"></button>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         <div class="card__under">
                             <h2 class="card__title">Гора Эльбрус</h2>
                             <div class="card__like-container">
-                            <img src="./images/Like.svg" alt="лайк" class="card__like">
+                                <button type="button" class="card__like-button"></button>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                         <div class="card__under">
                             <h2 class="card__title">Домбай</h2>
                             <div class="card__like-container">
-                            <img src="./images/Like.svg" alt="лайк" class="card__like">
+                                <button type="button" class="card__like-button"></button>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         <div class="card__under">
                             <h2 class="card__title">Карачаево-Черкесия</h2>
                             <div class="card__like-container">
-                            <img src="./images/Like.svg" alt="лайк" class="card__like">
+                                <button type="button" class="card__like-button"></button>
                             </div>
                         </div>
                     </div>
@@ -95,6 +95,6 @@
             </footer>
         </div>        
     </div>
-    <script src="./script.js"></script>
+    <script src="./scripts/popup.js"></script>
 </body>
 </html>

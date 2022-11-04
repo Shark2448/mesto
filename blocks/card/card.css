@@ -2,8 +2,8 @@
     position: relative;
     background: #FFF;
     border-radius: 10px;
-    height: 361px;
-    width: 282px;
+    max-width: 282px;
+    max-height: 361px;
     margin: 0 auto;
     margin-bottom: 20px;
 }
@@ -12,7 +12,7 @@
     margin-bottom: 0;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 900px) {
     .card {
         margin: 0;
         padding: 0;

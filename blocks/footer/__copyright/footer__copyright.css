@@ -9,7 +9,7 @@
     line-height: 17px;
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 900px) {
     .footer__copyright {
         font-size: 18px;
         line-height: 21.8px;
