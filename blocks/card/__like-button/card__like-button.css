@@ -1,13 +1,15 @@
 .card__like-button {
-    margin: 0;
+    display: flex;
+    flex-shrink: 0;
     padding: 0;
     width: 22px;
     height: 19px;
-    background: #FFF;
+    background: transparent;
     background-image: url('../../../images/Like.svg');
     background-repeat: no-repeat;
     background-position: center;
-    border: 0px #FFF;
+    background-size: 22px;
+    border: 0px #000;
     align-self: center;
     transition: opacity 0.1s linear 0s;
     cursor: pointer;

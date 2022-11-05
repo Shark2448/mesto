@@ -5,7 +5,7 @@ const profileName = document.querySelector('.profile__name');
 const profileAbout = document.querySelector('.profile__text');
 const profileFieldName = document.querySelector('.popup__field_profile_name');
 const profileFieldAbout = document.querySelector('.popup__field_profile_about');
-const profileForm = document.querySelector('.popup__container_profile_form');
+const profileForm = document.querySelector('.popup__profile-form');
 
 editButton.addEventListener('click', () => {
     profileFieldName.value = profileName.textContent
