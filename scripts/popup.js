@@ -40,7 +40,7 @@ const initialCards = [
   }
 ];
 
-const cardTemplate = document.querySelector('#card-template').content.querySelector('.card'); 
+const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
 const deleteCardHandler = (evt) => {
   evt.target.closest('.card').remove();
@@ -51,13 +51,19 @@ const createCard = (card) => {
 
   const cardTitle = newCard.querySelector('.card__title');
   cardTitle.textContent = card.name;
-  
+
   const cardLink = newCard.querySelector('.card__img');
   cardLink.src = card.link;
   cardLink.alt = card.name;
 
   const deleteButton = newCard.querySelector('.card__delete-button')
   deleteButton.addEventListener('click', deleteCardHandler)
+
+  const likeButton = newCard.querySelector('.card__like-button');
+
+  likeButton.addEventListener('click', () => {
+    likeButton.classList.toggle('card__like-button_active')
+  })
 
   return newCard;
 }
@@ -86,7 +92,7 @@ function profileFormSubmitHandler(evt) {
 
 function cardFormSubmitHandler(evt) {
   evt.preventDefault();
-  renderCard({ name: cardFieldName.value, link: cardFieldLink.value})
+  renderCard({ name: cardFieldName.value, link: cardFieldLink.value })
   cardFieldName.value = '';
   cardFieldLink.value = '';
   closePopup()
