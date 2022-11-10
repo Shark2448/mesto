@@ -42,6 +42,10 @@ const initialCards = [
 
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card'); 
 
+const deleteCardHandler = (evt) => {
+  evt.target.closest('.card').remove();
+}
+
 const createCard = (card) => {
   const newCard = cardTemplate.cloneNode(true);
 
@@ -51,6 +55,9 @@ const createCard = (card) => {
   const cardLink = newCard.querySelector('.card__img');
   cardLink.src = card.link;
   cardLink.alt = card.name;
+
+  const deleteButton = newCard.querySelector('.card__delete-button')
+  deleteButton.addEventListener('click', deleteCardHandler)
 
   return newCard;
 }
