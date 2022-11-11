@@ -1,6 +1,6 @@
 const profileOpenButton = document.querySelector('.profile__edit-button');
-const cardOpenButton = document.querySelector('.profile__add-button')
-const closeButton = document.querySelectorAll('.popup__close-button');
+const cardOpenButton = document.querySelector('.profile__add-button');
+const closeButtons = document.querySelectorAll('.popup__close-button');
 const popupProfile = document.querySelector('.popup_profile');
 const popupCard = document.querySelector('.popup_card');
 const popupPhoto = document.querySelector('.popup_photo');
@@ -14,7 +14,7 @@ const cardFieldName = document.querySelector('.popup__field_card_name');
 const cardFieldLink = document.querySelector('.popup__field_card_link');
 const profileForm = document.querySelector('.popup__profile-form');
 const cardForm = document.querySelector('.popup__card-form');
-const cardContainer = document.querySelector('.photo-cards')
+const cardContainer = document.querySelector('.photo-cards');
 
 const initialCards = [
   {
@@ -45,7 +45,7 @@ const initialCards = [
 
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
-const deleteCardHandler = (evt) => {
+const handleDeleteCard = (evt) => {
   evt.target.closest('.card').remove();
 }
 
@@ -60,7 +60,7 @@ const createCard = (card) => {
   cardLink.alt = card.name;
 
   const deleteButton = newCard.querySelector('.card__delete-button')
-  deleteButton.addEventListener('click', deleteCardHandler)
+  deleteButton.addEventListener('click', handleDeleteCard)
 
   const likeButton = newCard.querySelector('.card__like-button');
 
@@ -72,41 +72,42 @@ const createCard = (card) => {
     imageRaise.src = card.link
     imageRaise.alt = card.name
     imageName.textContent = card.name
-    popupPhoto.classList.add('popup_opened')
+    openPopup(popupPhoto)
   })
-  
+
   return newCard;
 }
 
 profileOpenButton.addEventListener('click', () => {
   profileFieldName.value = profileName.textContent
   profileFieldAbout.value = profileAbout.textContent
-  popupProfile.classList.add('popup_opened')
+  openPopup(popupProfile)
 })
 
 cardOpenButton.addEventListener('click', () => {
-  popupCard.classList.add('popup_opened')
+  openPopup(popupCard)
 })
 
-function closePopup() {
-  popupProfile.classList.remove('popup_opened')
-  popupCard.classList.remove('popup_opened')
-  popupPhoto.classList.remove('popup_opened')
+function openPopup(popup) {
+  popup.classList.add('popup_opened')
 }
 
-function profileFormSubmitHandler(evt) {
+function closePopup(popup) {
+  popup.classList.remove('popup_opened')
+}
+
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = profileFieldName.value
   profileAbout.textContent = profileFieldAbout.value
-  closePopup()
+  closePopup(popupProfile)
 }
 
-function cardFormSubmitHandler(evt) {
+function handleCardFormSubmit(evt) {
   evt.preventDefault();
   renderCard({ name: cardFieldName.value, link: cardFieldLink.value })
-  cardFieldName.value = '';
-  cardFieldLink.value = '';
-  closePopup()
+  evt.target.reset()
+  closePopup(popupCard)
 }
 
 const renderCard = (card) => {
@@ -117,8 +118,11 @@ initialCards.map((card) => {
   renderCard(card);
 })
 
-cardForm.addEventListener('submit', cardFormSubmitHandler)
+cardForm.addEventListener('submit', handleCardFormSubmit)
 
-profileForm.addEventListener('submit', profileFormSubmitHandler);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
 
-closeButton.forEach((button) => button.addEventListener('click', closePopup))
+closeButtons.forEach((button) => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => closePopup(popup))
+})
