@@ -3,6 +3,9 @@ const cardOpenButton = document.querySelector('.profile__add-button')
 const closeButton = document.querySelectorAll('.popup__close-button');
 const popupProfile = document.querySelector('.popup_profile');
 const popupCard = document.querySelector('.popup_card');
+const popupPhoto = document.querySelector('.popup_photo');
+const imageRaise = document.querySelector('.popup__photo-img');
+const imageName = document.querySelector('.popup__photo-name');
 const profileName = document.querySelector('.profile__name');
 const profileAbout = document.querySelector('.profile__text');
 const profileFieldName = document.querySelector('.popup__field_profile_name');
@@ -65,6 +68,13 @@ const createCard = (card) => {
     likeButton.classList.toggle('card__like-button_active')
   })
 
+  cardLink.addEventListener('click', () => {
+    imageRaise.src = card.link
+    imageRaise.alt = card.name
+    imageName.textContent = card.name
+    popupPhoto.classList.add('popup_opened')
+  })
+  
   return newCard;
 }
 
@@ -81,6 +91,7 @@ cardOpenButton.addEventListener('click', () => {
 function closePopup() {
   popupProfile.classList.remove('popup_opened')
   popupCard.classList.remove('popup_opened')
+  popupPhoto.classList.remove('popup_opened')
 }
 
 function profileFormSubmitHandler(evt) {
