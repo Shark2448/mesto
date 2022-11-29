@@ -90,10 +90,30 @@ cardOpenButton.addEventListener('click', () => {
 
 function openPopup(popup) {
   popup.classList.add('popup_opened')
+  popup.addEventListener('click', (evt) => {
+    if(evt.target.classList.contains('popup_opened')) 
+    closePopup(popup)
+  })
+  document.addEventListener('keydown', (evt) => {
+  if(evt.keyCode == 27) {
+    closePopup(popup)
+    }
+  })
 }
 
 function closePopup(popup) {
   popup.classList.remove('popup_opened')
+  
+  popup.removeEventListener('click', (evt) => {
+    if(evt.target.classList.contains('popup_opened')) 
+    closePopup(popup)
+  })
+  
+  document.removeEventListener('keydown', (evt) => {
+    if(evt.keyCode == 27) {
+      closePopup(popup)
+      }
+    })
 }
 
 function handleProfileFormSubmit(evt) {

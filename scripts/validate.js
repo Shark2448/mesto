@@ -83,7 +83,6 @@ function enableValidation ({formSelector, fieldClass, errorTextClass, buttonClas
     formData.forEach((value, key) => {
       const errorMessage = validate(key, value, values);
       const inputElement = form.querySelector(`${fieldClass}[name=${key}]`)
-      console.log(key)
 
       if (!errorMessage) {
         return;
@@ -110,6 +109,7 @@ enableValidation({
   errorTextClass: '.popup__error-text',
   buttonClass: '.popup__save-button'
 });
+
 enableValidation({
   formSelector: '#card-form',
   fieldClass: '.popup__field',
@@ -178,6 +178,12 @@ function validateCardName(value) {
 }
 
 function validateCardLink(value) {
+  const linkError = !(/(www|http:|https:)+[^\s]+[\w]/.test(value));
+
+  if (linkError) {
+    return "Введите адрес сайта"
+  }
+
   if (!value) {
     return "Вы пропустили это поле.";
   }
