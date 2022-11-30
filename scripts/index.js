@@ -94,11 +94,12 @@ function openPopup(popup) {
     if(evt.target.classList.contains('popup_opened')) 
     closePopup(popup)
   })
-  document.addEventListener('keydown', (evt) => {
-  if(evt.keyCode == 27) {
-    closePopup(popup)
+  document.addEventListener('keydown', function handleEscClose (evt) {
+  
+    if (evt.key === 'Escape') {
+      closePopup(popup)
     }
-  })
+  });
 }
 
 function closePopup(popup) {
@@ -108,12 +109,12 @@ function closePopup(popup) {
     if(evt.target.classList.contains('popup_opened')) 
     closePopup(popup)
   })
+  document.removeEventListener('keydown', function handleEscClose (evt) {
   
-  document.removeEventListener('keydown', (evt) => {
-    if(evt.keyCode == 27) {
+    if (evt.key === 'Escape') {
       closePopup(popup)
-      }
-    })
+    }
+  });
 }
 
 function handleProfileFormSubmit(evt) {

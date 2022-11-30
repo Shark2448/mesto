@@ -1,190 +1,72 @@
-function enableValidation ({formSelector, fieldClass, errorTextClass, buttonClass}) {
-  const form = document.querySelector(formSelector);
-  const submitButton = form.querySelector(buttonClass);
-
-  function setError (key, errorMessage) {
-    const inputElement = form.querySelector(`${fieldClass}[name=${key}]`);
-    let errorElement = form.querySelector(`${errorTextClass}[data-key=${key}]`);
-
-    if (!errorElement) {
-      errorElement = document.createElement('p');
-      inputElement.after(errorElement);
-    }
-  
-    inputElement.classList.add('popup__error-text_invalid');
-    errorElement.classList.add('popup__error-text');
-    errorElement.dataset.key = key;
-    errorElement.textContent = errorMessage;
-  }
-
-  function clearError(key) {
-    const inputElement = form.querySelector(`${fieldClass}[name=${key}]`);
-    let errorElement = form.querySelector(`${errorTextClass}[data-key=${key}]`);
-
-    inputElement.classList.remove('popup__error-text_invalid');
-
-    if (errorElement) {
-      errorElement.remove()
-    }
-  }
-
-  form.addEventListener('input', (evt) => {
-    const key = evt.target.name;
-    const value = evt.target.value;
-    const formData = new FormData(evt.currentTarget);
-    const values = Object.fromEntries(formData)
-
-    const errorMessage = validate(key, value, values);
-
-    let isFormValid = true;
-
-    formData.forEach((value, key) => {
-      const errorMessage = validate(key, value, values);
-      if (errorMessage) {
-        isFormValid = false;
-      }  
-    })
-
-    if (!isFormValid) {
-      submitButton.classList.add('popup__save-button_disabled');
-      submitButton.disabled = true;
-    } else {
-      submitButton.classList.remove('popup__save-button_disabled');
-      submitButton.disabled = false;
-    }
-
-    if (!errorMessage) {
-      evt.target.onblur = () => {
-        evt.target.dataset.dirty = 'true';
-      };
-      clearError(key);
-      return
-    }
-    
-    if (evt.target.dataset.dirty === 'true') {
-      setError(key, errorMessage);
-      return;
-    }
-
-    evt.target.onblur = () => {
-      evt.target.dataset.dirty = 'true';
-      setError(key, errorMessage);
-    };
-
-    
-  });
-
-  form.addEventListener('submit', (evt) => {
-    const formData = new FormData(evt.currentTarget);
-    const values = Object.fromEntries(formData);
-
-    let isFormValid = true;
-    
-    formData.forEach((value, key) => {
-      const errorMessage = validate(key, value, values);
-      const inputElement = form.querySelector(`${fieldClass}[name=${key}]`)
-
-      if (!errorMessage) {
-        return;
-      }
-
-      setError(key, errorMessage);
-      inputElement.dataset.dirty = 'true';
-
-      isFormValid = false; 
-    });
-
-    if (!isFormValid) {
-      evt.preventDefault();
-      return;
-    }
-    
-  });
-
-}
-
-enableValidation({
-  formSelector: '#profile-form',
-  fieldClass: '.popup__field',
-  errorTextClass: '.popup__error-text',
-  buttonClass: '.popup__save-button'
-});
-
-enableValidation({
-  formSelector: '#card-form',
-  fieldClass: '.popup__field',
-  errorTextClass: '.popup__error-text',
-  buttonClass: '.popup__save-button'
-});
-
-const validators = {
-  profileName: validateProfileName,
-  profileAbout: validateProfileAbout,
-  cardName: validateCardName,
-  cardLink: validateCardLink,
+const selectorValidator = {
+  formSelector: ".popup__container",
+  inputSelector: ".popup__field",
+  submitButtonSelector: ".popup__save-button",
+  disabledButtonClass: "popup__save-button_disabled",
+  textErrorClass: "popup__error-text",
+  errorClass: "popup__error-text_invalid",
 };
 
-function validate(key, value) {
-  const validator = validators[key];
-  return validator(value);
-}
+const showInputError = (formElement, inputElement, errorMessage, textErrorClass, errorClass) => {
+  const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
+  inputElement.classList.add(textErrorClass);
+  errorElement.classList.add(errorClass);
+  errorElement.textContent = errorMessage;
+};
 
-function validateProfileName(value) {
-  if (!value) {
-    return "Вы пропустили это поле.";
+const hideInputError = (formElement, inputElement, textErrorClass, errorClass) => {
+  const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
+  inputElement.classList.remove(textErrorClass);
+  inputElement.classList.remove(errorClass);
+  errorElement.textContent = " ";
+};
+
+const checkInputValidity = (formElement, inputElement, textErrorClass, errorClass) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage, textErrorClass, errorClass);
+  } else {
+    hideInputError(formElement, inputElement, textErrorClass, errorClass);
   }
+};
 
-  if (value.length < 2) {
-    return "Минимальное количество символов: 2.Длина текста сейчас: 1 символ";
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
+
+const toggleButtonState = (inputList, buttonElement, disabledButtonClass) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add(disabledButtonClass);
+    buttonElement.disabled = true;  
+  } else {
+    buttonElement.classList.remove(disabledButtonClass);
+    buttonElement.disabled = false;
   }
+};
 
-  if (value.length > 40) {
-    return "Вы превысили количество символов";
-  }
+const setEventListeners = (formElement, disabledButtonClass, textErrorClass, errorClass) => {
+  const inputList = Array.from(formElement.querySelectorAll(".popup__field"));
+  const buttonElement = formElement.querySelector(".popup__save-button");
 
-  return null;
-}
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener("input", () => {
+      checkInputValidity(formElement, inputElement, textErrorClass, errorClass);
+      toggleButtonState(inputList, buttonElement, disabledButtonClass);
+    });
+  });
+};
 
-function validateProfileAbout(value) {
-  if (!value) {
-    return "Вы пропустили это поле.";
-  }
+const enableValidation = (formSelector, disabledButtonClass, textErrorClass, errorClass) => {
+  const formList = Array.from(document.querySelectorAll(formSelector));
+  formList.forEach((formElement) => {
+    formElement.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement, disabledButtonClass, textErrorClass, errorClass);
+  });
+};
 
-  if (value.length < 2) {
-    return "Минимальное количество символов: 2.Длина текста сейчас: 1 символ";
-  }
+let {formSelector, disabledButtonClass, errorClass, textErrorClass} = selectorValidator
 
-  if (value.length > 200) {
-    return "Вы превысили количество символов";
-  }
-
-  return null;
-}
-
-function validateCardName(value) {
-  if (!value) {
-    return "Вы пропустили это поле.";
-  }
-
-  if (value.length < 2) {
-    return "Минимальное количество символов: 2.Длина текста сейчас: 1 символ";
-  }
-
-  if (value.length > 30) {
-    return "Вы превысили количество символов";
-  }
-
-  return null;
-}
-
-function validateCardLink(value) {
-  const linkError = !(/(www|http:|https:)+[^\s]+[\w]/.test(value));
-
-  if (linkError) {
-    return "Введите адрес сайта"
-  }
-
-  if (!value) {
-    return "Вы пропустили это поле.";
-  }
-}
+enableValidation(formSelector, disabledButtonClass, errorClass, textErrorClass);
