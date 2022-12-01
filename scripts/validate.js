@@ -1,10 +1,10 @@
 const selectorValidator = {
-  formSelector: ".popup__container",
-  inputSelector: ".popup__field",
-  submitButtonSelector: ".popup__save-button",
-  disabledButtonClass: "popup__save-button_disabled",
-  textErrorClass: "popup__error-text",
-  errorClass: "popup__error-text_invalid",
+  formSelector: '.popup__container',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__save-button',
+  disabledButtonClass: 'popup__save-button_disabled',
+  textErrorClass: 'popup__error-text',
+  errorClass: 'popup__error-text_invalid',
 };
 
 const showInputError = (formElement, inputElement, errorMessage, textErrorClass, errorClass) => {
@@ -18,7 +18,7 @@ const hideInputError = (formElement, inputElement, textErrorClass, errorClass) =
   const errorElement = formElement.querySelector(`.${inputElement.name}-error`);
   inputElement.classList.remove(textErrorClass);
   inputElement.classList.remove(errorClass);
-  errorElement.textContent = " ";
+  errorElement.textContent = ' ';
 };
 
 const checkInputValidity = (formElement, inputElement, textErrorClass, errorClass) => {
@@ -45,28 +45,33 @@ const toggleButtonState = (inputList, buttonElement, disabledButtonClass) => {
   }
 };
 
-const setEventListeners = (formElement, disabledButtonClass, textErrorClass, errorClass) => {
-  const inputList = Array.from(formElement.querySelectorAll(".popup__field"));
-  const buttonElement = formElement.querySelector(".popup__save-button");
+const setEventListeners = (formElement, inputSelector, submitButtonSelector, disabledButtonClass, textErrorClass, errorClass) => {
+  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+  const buttonElement = formElement.querySelector(submitButtonSelector);
 
   inputList.forEach((inputElement) => {
-    inputElement.addEventListener("input", () => {
+    inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, textErrorClass, errorClass);
       toggleButtonState(inputList, buttonElement, disabledButtonClass);
     });
   });
 };
 
-const enableValidation = (formSelector, disabledButtonClass, textErrorClass, errorClass) => {
+const enableValidation = (formSelector, inputSelector, disabledButtonClass, textErrorClass, errorClass, submitButtonSelector) => {
   const formList = Array.from(document.querySelectorAll(formSelector));
   formList.forEach((formElement) => {
-    formElement.addEventListener("submit", (evt) => {
+    formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
-    setEventListeners(formElement, disabledButtonClass, textErrorClass, errorClass);
+    setEventListeners(formElement, inputSelector, disabledButtonClass, textErrorClass, errorClass, submitButtonSelector);
   });
 };
 
-let {formSelector, disabledButtonClass, errorClass, textErrorClass} = selectorValidator
-
-enableValidation(formSelector, disabledButtonClass, errorClass, textErrorClass);
+enableValidation(
+  selectorValidator.formSelector,
+  selectorValidator.inputSelector,
+  selectorValidator.submitButtonSelector,
+  selectorValidator.disabledButtonClass,
+  selectorValidator.errorClass,
+  selectorValidator.textErrorClass,
+  );

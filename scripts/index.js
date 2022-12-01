@@ -79,43 +79,55 @@ const createCard = (card) => {
 }
 
 profileOpenButton.addEventListener('click', () => {
+  const inputList = Array.from(profileForm.querySelectorAll('.popup__field'));
+  const buttonElement = profileForm.querySelector('.popup__save-button');
   profileFieldName.value = profileName.textContent
   profileFieldAbout.value = profileAbout.textContent
   openPopup(popupProfile)
+
+  inputList.forEach((inputElement) => {
+    checkInputValidity(profileForm, inputElement, 'popup__error-text', 'popup__error-text_invalid')
+  });
+  
+  toggleButtonState(inputList, buttonElement, 'popup__save-button_disabled'); 
 })
 
 cardOpenButton.addEventListener('click', () => {
+  const inputList = Array.from(cardForm.querySelectorAll('.popup__field'));
+  const buttonElement = cardForm.querySelector('.popup__save-button');
   openPopup(popupCard)
-})
+
+  inputList.forEach((inputElement) => {
+    hideInputError(cardForm, inputElement, 'popup__error-text', 'popup__error-text_invalid')
+    inputElement.value = ''
+  });
+
+  toggleButtonState(inputList, buttonElement, 'popup__save-button_disabled');
+});
 
 function openPopup(popup) {
   popup.classList.add('popup_opened')
-  popup.addEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup_opened')) 
-    closePopup(popup)
-  })
-  document.addEventListener('keydown', function handleEscClose (evt) {
+  popup.addEventListener('click', handleCloseOnOverlay);
+  document.addEventListener('keydown', handleEscClose);
   
-    if (evt.key === 'Escape') {
-      closePopup(popup)
-    }
-  });
 }
 
 function closePopup(popup) {
-  popup.classList.remove('popup_opened')
-  
-  popup.removeEventListener('click', (evt) => {
-    if(evt.target.classList.contains('popup_opened')) 
-    closePopup(popup)
-  })
-  document.removeEventListener('keydown', function handleEscClose (evt) {
-  
-    if (evt.key === 'Escape') {
-      closePopup(popup)
-    }
-  });
+  popup.classList.remove('popup_opened');
+  popup.removeEventListener('click', handleCloseOnOverlay);
+  document.removeEventListener('keydown', handleEscClose);
 }
+
+function handleCloseOnOverlay(evt) {
+  closePopup(evt.target);
+};
+
+function handleEscClose (evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
+};
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
