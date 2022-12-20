@@ -16,6 +16,25 @@ const profileForm = document.querySelector('.popup__profile-form');
 const cardForm = document.querySelector('.popup__card-form');
 const cardContainer = document.querySelector('.photo-cards');
 
+
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
+const selectorValidator = {
+  formSelector: '.popup__container',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__save-button',
+  disabledButtonClass: 'popup__save-button_disabled',
+  textErrorClass: 'popup__error-text',
+  errorClass: 'popup__error-text_invalid',
+};
+
+const cardValidation = new FormValidator(selectorValidator, cardForm);
+const profileValidation = new FormValidator(selectorValidator, profileForm);
+
+cardValidation.enableValidation();
+profileValidation.enableValidation();
+
 const initialCards = [
   {
     name: 'Архыз',
@@ -43,73 +62,35 @@ const initialCards = [
   }
 ];
 
-const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
-
-const handleDeleteCard = (evt) => {
-  evt.target.closest('.card').remove();
-}
-
-const createCard = (card) => {
-  const newCard = cardTemplate.cloneNode(true);
-
-  const cardTitle = newCard.querySelector('.card__title');
-  cardTitle.textContent = card.name;
-
-  const cardLink = newCard.querySelector('.card__img');
-  cardLink.src = card.link;
-  cardLink.alt = card.name;
-
-  const deleteButton = newCard.querySelector('.card__delete-button')
-  deleteButton.addEventListener('click', handleDeleteCard)
-
-  const likeButton = newCard.querySelector('.card__like-button');
-
-  likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle('card__like-button_active')
-  })
-
-  cardLink.addEventListener('click', () => {
-    imageRaise.src = card.link
-    imageRaise.alt = card.name
-    imageName.textContent = card.name
-    openPopup(popupPhoto)
-  })
-
-  return newCard;
-}
-
 profileOpenButton.addEventListener('click', () => {
-  const inputList = Array.from(profileForm.querySelectorAll('.popup__field'));
-  const buttonElement = profileForm.querySelector('.popup__save-button');
   profileFieldName.value = profileName.textContent
   profileFieldAbout.value = profileAbout.textContent
-  openPopup(popupProfile)
-
-  inputList.forEach((inputElement) => {
-    checkInputValidity(profileForm, inputElement, 'popup__error-text', 'popup__error-text_invalid')
-  });
-  
-  toggleButtonState(inputList, buttonElement, 'popup__save-button_disabled'); 
+  openPopup(popupProfile) 
+  profileValidation.resetValidation();
 })
 
 cardOpenButton.addEventListener('click', () => {
   const inputList = Array.from(cardForm.querySelectorAll('.popup__field'));
-  const buttonElement = cardForm.querySelector('.popup__save-button');
   openPopup(popupCard)
 
   inputList.forEach((inputElement) => {
-    hideInputError(cardForm, inputElement, 'popup__error-text', 'popup__error-text_invalid')
     inputElement.value = ''
   });
 
-  toggleButtonState(inputList, buttonElement, 'popup__save-button_disabled');
+  cardValidation.resetValidation();
 });
+
+function imgZoom (name, link) {
+  imageRaise.src = link
+  imageRaise.alt = name
+  imageName.textContent = name
+  openPopup(popupPhoto)
+};
 
 function openPopup(popup) {
   popup.classList.add('popup_opened')
   popup.addEventListener('click', handleCloseOnOverlay);
   document.addEventListener('keydown', handleEscClose);
-  
 }
 
 function closePopup(popup) {
@@ -143,8 +124,9 @@ function handleCardFormSubmit(evt) {
   closePopup(popupCard)
 }
 
-const renderCard = (card) => {
-  cardContainer.prepend(createCard(card));
+const renderCard = (data) => {
+  const card = new Card(data, '#card-template', imgZoom)
+  cardContainer.prepend(card.createCard());
 }
 
 initialCards.map((card) => {
@@ -159,3 +141,4 @@ closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => closePopup(popup))
 })
+
