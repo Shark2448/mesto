@@ -15,7 +15,7 @@ const cardFieldLink = document.querySelector('.popup__field_card_link');
 const profileForm = document.querySelector('.popup__profile-form');
 const cardForm = document.querySelector('.popup__card-form');
 const cardContainer = document.querySelector('.photo-cards');
-
+const inputList = Array.from(cardForm.querySelectorAll('.popup__field'));
 
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
@@ -70,7 +70,6 @@ profileOpenButton.addEventListener('click', () => {
 })
 
 cardOpenButton.addEventListener('click', () => {
-  const inputList = Array.from(cardForm.querySelectorAll('.popup__field'));
   openPopup(popupCard)
 
   inputList.forEach((inputElement) => {
@@ -80,7 +79,7 @@ cardOpenButton.addEventListener('click', () => {
   cardValidation.resetValidation();
 });
 
-function imgZoom (name, link) {
+function enhanceTheImage (name, link) {
   imageRaise.src = link
   imageRaise.alt = name
   imageName.textContent = name
@@ -125,7 +124,7 @@ function handleCardFormSubmit(evt) {
 }
 
 const renderCard = (data) => {
-  const card = new Card(data, '#card-template', imgZoom)
+  const card = new Card(data, '#card-template', enhanceTheImage);
   cardContainer.prepend(card.createCard());
 }
 

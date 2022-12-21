@@ -1,5 +1,5 @@
 export default class Card {
-    constructor(data, cardSelector, imgZoom) {
+    constructor(data, cardSelector, enhanceTheImage) {
         this._name = data.name;
         this._link = data.link;
         this._cardSelector = cardSelector;
@@ -7,7 +7,7 @@ export default class Card {
         this._cardLikeButton = this._element.querySelector('.card__like-button');
         this._cardDeleteButton = this._element.querySelector('.card__delete-button');
         this._cardImg = this._element.querySelector('.card__img');
-        this._imgZoom = imgZoom;
+        this._enhanceTheImage = enhanceTheImage;
     }
 
     _cardTemplate() {
@@ -47,7 +47,7 @@ export default class Card {
 
     _cardImagePopup() {
         this._cardImg.addEventListener('click', () => {
-            this._imgZoom(this._name, this._link);
+            this._enhanceTheImage(this._name, this._link);
         });
     }
 }

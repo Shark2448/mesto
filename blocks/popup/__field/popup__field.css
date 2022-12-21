@@ -1,5 +1,6 @@
 .popup__field {
-    min-height: 27px;
+    margin: 0;
+    padding: 0 0 13px;
     font-weight: 400px;
     font-size: 14px;
     line-height: 17px;
@@ -12,7 +13,10 @@
 
 .popup__field:first-child {
     margin: 75px 0 0 0;
-    padding: 0;
+}
+
+.popup__field:last-of-type {
+    margin: 13px 0 0 0;
 }
 
 @media screen and (min-width: 900px) {
