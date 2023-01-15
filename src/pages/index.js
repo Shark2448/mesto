@@ -1,18 +1,17 @@
 import './index.css';
-import Card from '../scripts/Card.js';
-import FormValidator from '../scripts/FormValidator.js';
-import Section from '../scripts/section.js';
-import PopupWithImage from '../scripts/PopupWithImage.js';
-import PopupWithForm from '../scripts/PopupWithForm.js';
-import UserInfo from '../scripts/UserInfo.js';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from '../components/section.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import UserInfo from '../components/UserInfo.js';
 
 import {
   profileOpenButton,
   cardOpenButton,
-  inputList,
   profileForm,
-  profileName,
-  profileAbout,
+  cardFormSelector,
+  profileFormSelector,
   profileFieldName,
   profileFieldAbout,
   cardForm,
@@ -21,15 +20,17 @@ import {
   popupCardSelector,
   popupPhotoSelector,
   popupProfileSelector,
-  cardListSelector
+  cardListSelector,
+  profileNameSelector,
+  profileAboutSelector
 } from '../utils/constants.js';
 
 //классы
-const popupProfileWithForm = new PopupWithForm(popupProfileSelector, handleProfileFormSubmit);
-const popupCardWithForm = new PopupWithForm(popupCardSelector, handleCardFormSubmit);
+const popupProfileWithForm = new PopupWithForm(popupProfileSelector, handleProfileFormSubmit, profileFormSelector);
+const popupCardWithForm = new PopupWithForm(popupCardSelector, handleCardFormSubmit, cardFormSelector);
 const popupCardImage = new PopupWithImage(popupPhotoSelector);
 
-const userProfileInfo = new UserInfo({nameElement: profileName, aboutElement: profileAbout})
+const userProfileInfo = new UserInfo({nameSelector: profileNameSelector, aboutSelector: profileAboutSelector})
 
 //слушатели
 popupProfileWithForm.setEventListeners();
@@ -55,10 +56,6 @@ profileOpenButton.addEventListener('click', () => {
 
 //открыть Card
 cardOpenButton.addEventListener('click', () => {
-  inputList.forEach((inputElement) => {
-    inputElement.value = ''
-  });
-
   popupCardWithForm.openPopup();
   cardValidation.resetValidation();
 });
@@ -74,7 +71,7 @@ function handleCardFormSubmit(item) {
     link:item.cardLink
   }
   cardList.addNewItem(createCard(cardInfo))
-  popupCardWithForm.closePopup()
+  popupCardWithForm.close()
 }
 
 //создание карточки
