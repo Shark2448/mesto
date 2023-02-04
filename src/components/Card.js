@@ -64,11 +64,13 @@ export default class Card {
     }
 
     likeOn(data) {
+        this._likes = data.likes
         this._cardLike.textContent = data.likes.length;
         this._cardLikeButton.classList.add('card__like-button_active');
     }
 
     likeOff(data) {
+        this._likes = data.likes
         this._cardLike.textContent = data.likes.length;
         this._cardLikeButton.classList.remove('card__like-button_active');
     }
