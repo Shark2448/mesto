@@ -12,13 +12,15 @@ import {
   profileOpenButton,
   cardOpenButton,
   avatarOpenButton,
+  avatarSaveButton,
+  profileSaveButton,
+  cardSaveButton,
   profileForm,
   cardFormSelector,
   profileFormSelector,
   avatarFormSelector,
   profileFieldName,
   profileFieldAbout,
-  saveButton,
   cardForm,
   selectorValidator,
   popupCardSelector,
@@ -98,7 +100,7 @@ cardOpenButton.addEventListener('click', () => {
 
 //форма Profile
 function handleProfileFormSubmit(data) {
-  renderLoading(true, saveButton, popupProfileWithForm)
+  renderLoading(true, profileSaveButton, popupProfileWithForm)
   api.changeUserInfo(data)
   .then((data) => {
     userProfileInfo.changeUserInfo(data);
@@ -107,13 +109,13 @@ function handleProfileFormSubmit(data) {
     console.log(err)
   })
   .finally(() => {
-    renderLoading(false, saveButton, popupProfileWithForm)
+    renderLoading(false, profileSaveButton, popupProfileWithForm)
   })
 }
 
 //форма Avatar
 function handleAvatarFormSubmit(data) {
-  renderLoading(true, saveButton, popupAvatarWithForm)
+  renderLoading(true, avatarSaveButton, popupAvatarWithForm)
   api.changeUserAvatar(data)
   .then((data) => {
     userProfileInfo.changeUserAvatar(data);
@@ -122,16 +124,15 @@ function handleAvatarFormSubmit(data) {
     console.log(err)
   })
   .finally(() => {
-    renderLoading(false, saveButton, popupAvatarWithForm)
+    renderLoading(false, avatarSaveButton, popupAvatarWithForm)
   })
 }
 
 //форма Card
 function handleCardFormSubmit(data) {
-  renderLoading(true, saveButton, popupCardWithForm)
+  renderLoading(true, cardSaveButton, popupCardWithForm)
   api.createNewCard(data)
   .then((card) => {
-    console.log(userInfo)
     cardList.addNewItem(createCard(card, userInfo));
     popupCardWithForm.close()
   })
@@ -139,7 +140,7 @@ function handleCardFormSubmit(data) {
     console.log(err)
   })
   .finally(() => {
-    renderLoading(false, saveButton, popupCardWithForm)
+    renderLoading(false, cardSaveButton, popupCardWithForm)
   })
 }
 

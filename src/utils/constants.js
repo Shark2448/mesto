@@ -6,7 +6,14 @@ export const profileFieldName = document.querySelector('.popup__field_profile_na
 export const profileFieldAbout = document.querySelector('.popup__field_profile_about');
 export const profileAvatar = document.querySelector('.profile__img');
 export const avatarLink = document.querySelector('.popup__field_avatar_link');
-export const saveButton = document.querySelectorAll('.popup__save-button');
+
+export const avatarContainer = document.querySelector('.popup__container_avatar');
+export const avatarSaveButton = avatarContainer.querySelector('.popup__save-button');
+export const profileContainer = document.querySelector('.popup__container_profile');
+export const profileSaveButton = profileContainer.querySelector('.popup__save-button');
+export const cardContainer = document.querySelector('.popup__container_card');
+export const cardSaveButton = cardContainer.querySelector('.popup__save-button');
+
 
 export const avatarForm = document.querySelector('.popup__avatar-form');
 export const profileForm = document.querySelector('.popup__profile-form');
